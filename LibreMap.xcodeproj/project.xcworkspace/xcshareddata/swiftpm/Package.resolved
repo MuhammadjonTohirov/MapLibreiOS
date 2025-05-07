@@ -1,0 +1,60 @@
+{
+  "originHash" : "5fc0c9cf1d3845ec311b6e0b572d4c84f5b5ca3d42a1e50cd89c46158ccf5389",
+  "pins" : [
+    {
+      "identity" : "mapbox-directions-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/flitsmeister/mapbox-directions-swift",
+      "state" : {
+        "revision" : "6c19ecc4e1324887ae3250802b8d13d8d8b3ff2d",
+        "version" : "0.23.3"
+      }
+    },
+    {
+      "identity" : "maplibre-gl-native-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution.git",
+      "state" : {
+        "revision" : "82fd2565148fafa3478a2951bb709414950bda6f",
+        "version" : "6.12.3"
+      }
+    },
+    {
+      "identity" : "maplibre-navigation-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maplibre/maplibre-navigation-ios",
+      "state" : {
+        "revision" : "f91faffa1aa03be16fc588dc5076b7811d1c5166",
+        "version" : "4.0.0"
+      }
+    },
+    {
+      "identity" : "polyline",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/raphaelmor/Polyline",
+      "state" : {
+        "revision" : "353f80378dcd8f17eefe8550090c6b1ae3c9da23",
+        "version" : "5.1.0"
+      }
+    },
+    {
+      "identity" : "solar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ceeK/Solar.git",
+      "state" : {
+        "revision" : "c2b96f2d5fb7f835b91cefac5e83101f54643901",
+        "version" : "3.0.1"
+      }
+    },
+    {
+      "identity" : "turf-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/turf-swift.git",
+      "state" : {
+        "revision" : "213050191cfcb3d5aa76e1fa90c6ff1e182a42ca",
+        "version" : "2.8.0"
+      }
+    }
+  ],
+  "version" : 3
+}
