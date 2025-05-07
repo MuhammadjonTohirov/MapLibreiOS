@@ -25,7 +25,7 @@ struct MapScreen: View {
                     insets: .init(top: 0, left: 0, bottom: 0, right: 0),
                     animated: false
                 ),
-                trackingMode: .none,
+                trackingMode: Optional.none,
                 showsUserLocation: true
             )
             .ignoresSafeArea()
@@ -52,7 +52,7 @@ struct MapScreen: View {
                                 }
                             },
                             onZoomInTap: {
-                                viewModel.mapView?.zoomLevel += 1
+                                viewModel.mapView?.setZoomLevel((viewModel.mapView?.zoomLevel ?? 0) + 1, animated: true)
                             },
                             onZoomOutTap: {
                                 viewModel.mapView?.zoomLevel -= 1
@@ -90,4 +90,8 @@ struct MapScreen: View {
             }
         }
     }
+}
+
+#Preview {
+    MapScreen()
 }

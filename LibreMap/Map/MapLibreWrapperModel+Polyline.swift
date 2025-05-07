@@ -245,6 +245,8 @@ extension MapLibreWrapperModel {
             return
         }
         
-        mapView?.setVisibleCoordinateBounds(bounds, edgePadding: padding, animated: animated)
+        Task {
+            await mapView?.setVisibleCoordinateBounds(bounds, edgePadding: padding, animated: animated)
+        }
     }
 }

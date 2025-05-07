@@ -40,11 +40,7 @@ open class MapLibreWrapperModel: NSObject, ObservableObject {
                                  acrossDistance: 1000,
                                  pitch: 0,
                                  heading: 0)
-        
-        if let zoom = zoom {
-            mapView.zoomLevel = zoom
-        }
-        
+
         mapView.setCamera(camera, animated: animated)
     }
     
@@ -52,7 +48,7 @@ open class MapLibreWrapperModel: NSObject, ObservableObject {
         guard let mapView = mapView else { return }
         
         let camera = MLNMapCamera(lookingAtCenter: coordinate,
-                                 fromDistance: 1000,
+                                 acrossDistance: 1000,
                                  pitch: 0,
                                  heading: 0)
         
@@ -96,8 +92,7 @@ extension MapLibreWrapperModel {
     
     func removeMarker(withId id: String) {
         guard let index = markers.firstIndex(where: { $0.id == id }),
-              let mapView = mapView,
-              let style = mapView.style else { return }
+              let mapView = mapView else { return }
         
         // Remove from the map
         if let annotation = mapView.annotations?.first(where: { ($0 as? MLNPointAnnotation)?.identifier == id }) {
