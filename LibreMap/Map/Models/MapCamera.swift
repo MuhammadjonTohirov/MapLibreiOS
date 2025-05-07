@@ -24,9 +24,9 @@ public struct MapCamera {
                                  heading: CLLocationDirection = 0,
                                  animate: Bool = true) -> MapCamera {
         let camera = MLNMapCamera(lookingAtCenter: center,
-                                 acrossDistance: distance,
-                                 pitch: pitch,
-                                 heading: heading)
+                                  acrossDistance: distance,
+                                  pitch: pitch,
+                                  heading: heading)
         return MapCamera(camera: camera, animate: animate)
     }
     
@@ -37,8 +37,8 @@ public struct MapCamera {
                                  animate: Bool = true) -> MapCamera {
         let camera = MLNMapCamera(lookingAtCenter: coordinate,
                                   acrossDistance: distance,
-                                 pitch: pitch,
-                                 heading: heading)
+                                  pitch: pitch,
+                                  heading: heading)
         return MapCamera(camera: camera, animate: animate)
     }
 }

@@ -50,88 +50,7 @@ struct MapRouteExampleView: View {
                 showsUserLocation: true
             )
             .ignoresSafeArea()
-            
-            // Top panel for location inputs
             VStack {
-                VStack(spacing: 10) {
-                    HStack {
-                        Image(systemName: "circle.fill")
-                            .foregroundColor(.green)
-                        
-                        TextField("Start location", text: $startAddress)
-                            .padding(8)
-                            .background(Color.white)
-                            .cornerRadius(8)
-                        
-                        Button(action: { showStartPicker = true }) {
-                            Image(systemName: "list.bullet")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                    
-                    HStack {
-                        Image(systemName: "mappin.circle.fill")
-                            .foregroundColor(.red)
-                        
-                        TextField("Destination", text: $endAddress)
-                            .padding(8)
-                            .background(Color.white)
-                            .cornerRadius(8)
-                        
-                        Button(action: { showEndPicker = true }) {
-                            Image(systemName: "list.bullet")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                    
-                    HStack {
-                        // Color selector
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 10) {
-                                ForEach(0..<routeColors.count, id: \.self) { index in
-                                    Circle()
-                                        .fill(Color(routeColors[index]))
-                                        .frame(width: 30, height: 30)
-                                        .overlay(
-                                            Circle()
-                                                .stroke(routeColor == routeColors[index] ? Color.white : Color.clear, lineWidth: 2)
-                                        )
-                                        .onTapGesture {
-                                            routeColor = routeColors[index]
-                                        }
-                                }
-                            }
-                        }
-                        .frame(width: 200, height: 40)
-                        
-                        Spacer()
-                        
-                        Button(action: calculateRoute) {
-                            if isCalculating {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            } else {
-                                Text("Calculate Route")
-                            }
-                        }
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                        .disabled(isCalculating)
-                    }
-                    
-                    if let errorMessage = errorMessage {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .font(.caption)
-                    }
-                }
-                .padding()
-                .background(Color.white.opacity(0.9))
-                .cornerRadius(12)
-                .shadow(radius: 5)
-                .padding()
                 
                 Spacer()
                 
@@ -139,7 +58,15 @@ struct MapRouteExampleView: View {
                 HStack {
                     Button(action: { viewModel.clearAllPolylines() }) {
                         Text("Clear Routes")
-                            .padding()
+                            .padding(8)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    
+                    Button(action: { calculateRoute() }) {
+                        Text("Draw route")
+                            .padding(8)
                             .background(Color.red)
                             .foregroundColor(.white)
                             .cornerRadius(8)
@@ -152,7 +79,7 @@ struct MapRouteExampleView: View {
                             viewModel.focusOnPolyline(id: lastPolyline.id)
                         }) {
                             Text("Focus on Route")
-                                .padding()
+                                .padding(8)
                                 .background(Color.green)
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
@@ -199,29 +126,10 @@ struct MapRouteExampleView: View {
         errorMessage = nil
         isCalculating = true
         
-        // First, geocode the start address
-        geocodeAddress(startAddress) { startResult in
-            switch startResult {
-            case .success(let startCoordinate):
-                // Then, geocode the end address
-                geocodeAddress(endAddress) { endResult in
-                    switch endResult {
-                    case .success(let endCoordinate):
-                        calculateRouteBetween(start: startCoordinate, end: endCoordinate)
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            isCalculating = false
-                            errorMessage = "Error finding destination: \(error.localizedDescription)"
-                        }
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    isCalculating = false
-                    errorMessage = "Error finding start location: \(error.localizedDescription)"
-                }
-            }
-        }
+        calculateRouteBetween(
+            start: .init(latitude: 40.392918, longitude: 71.796147),
+            end: .init(latitude: 40.380204, longitude: 71.768693)
+        )
     }
     
     // Geocode an address to get coordinates
@@ -249,9 +157,11 @@ struct MapRouteExampleView: View {
         // Create a RouteCalculator to compute the route
         let routeCalculator = RouteCalculator(apiKey: apiKey)
         
-        // Calculate the route
         Task {
-            let coordinates = await routeCalculator.calculateRoute(from: start, to: end)
+            let coordinates = await routeCalculator.calculateRoute(
+                from: .init(latitude: 40.392918, longitude: 71.796147),
+                to: .init(latitude: 40.380204, longitude: 71.768693)
+            )
             
             Task { @MainActor in
                 isCalculating = false

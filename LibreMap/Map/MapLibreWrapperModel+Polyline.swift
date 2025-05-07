@@ -245,7 +245,7 @@ extension MapLibreWrapperModel {
             return
         }
         
-        Task {
+        Task { @MainActor in
             await mapView?.setVisibleCoordinateBounds(bounds, edgePadding: padding, animated: animated)
         }
     }

@@ -21,9 +21,10 @@ class RouteCalculator {
     func calculateRoute(from start: CLLocationCoordinate2D,
                         to end: CLLocationCoordinate2D,
                         via waypoints: [CLLocationCoordinate2D] = []) async -> [CLLocationCoordinate2D] {
-        var route = [start] + waypoints + [end]
+        let route = [start] + waypoints + [end]
         
-        return (try? await RouteTariffCalcGateway().calculateRouteAndTariffs(req: .init(coords: route.map({.init(lat: $0.latitude, lng: $0.longitude)}), address: nil)))?.map?.routings.compactMap { item in
+        return (try? await RouteTariffCalcGateway()
+            .calculateRouteAndTariffs(req: .init(coords: route.map({.init(lat: $0.latitude, lng: $0.longitude)}), address: 221)))?.map?.routings.compactMap { item in
             CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)
         } ?? []
     }

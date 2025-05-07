@@ -22,7 +22,7 @@ final class RouteTariffCalcGateway: RouteTariffCalcGatewayProtocol {
     func calculateRouteAndTariffs(
         req: NetReqTaxiTariff
     ) async throws -> (map: NetResRouteCoords?, tariffs: [NetResTaxiTariff]?) {
-        await session.tasks.0.forEach({$0.cancel()})
+        await session.tasks.0.forEach { $0.cancel() }
         let result: NetRes<NetResRoute>? = try await Network.sendThrow(
             urlSession: session,
             request: Request(input: req)
@@ -52,6 +52,8 @@ final class RouteTariffCalcGateway: RouteTariffCalcGatewayProtocol {
                 "lang": "uz",
                 "User-Agent-OS": "ios"
             ]
+            req.httpBody = body
+            req.httpMethod = method.rawValue
             return req
         }
     }
