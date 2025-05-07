@@ -11,26 +11,12 @@ import MapLibre
 open class MapLibreWrapperModel: NSObject, ObservableObject, MLNMapViewDelegate {
     weak var mapView: MLNMapView?
     
-    @Published public var polylines: [MLNPolyline] = []
-    @Published public var polygons: [MLNPolygon] = []
-
-    public func addPolyline(coordinates: [CLLocationCoordinate2D], title: String? = nil) {
-        let polyline = MLNPolyline(coordinates: coordinates, count: UInt(coordinates.count))
-        polyline.title = title
-        polylines.append(polyline)
-    }
-
-    public func addPolygon(coordinates: [CLLocationCoordinate2D], title: String? = nil) {
-        let polygon = MLNPolygon(coordinates: coordinates, count: UInt(coordinates.count))
-        polygon.title = title
-        polygons.append(polygon)
-    }
+    // Published properties to track polyline drawing state
+    @Published public var isDrawingPolyline: Bool = false
+    @Published public var drawingCoordinates: [CLLocationCoordinate2D] = []
+    @Published public var savedPolylines: [MapPolyline] = []
     
-    public func mapView(_ mapView: MLNMapView, didFinishLoading style: MLNStyle) {
-        debugPrint("Did finish loading map style")
-    }
-    
-    public func mapView(_ mapView: MLNMapView, didChange mode: MLNUserTrackingMode, animated: Bool) {
-        debugPrint("Did change user tracking mode to \(mode) animated: \(animated)")
-    }
+    // Temporary source and layer IDs for drawing
+    let tempPolylineSourceID = "temp-polyline-source"
+    let tempPolylineLayerID = "temp-polyline-layer"
 }

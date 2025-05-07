@@ -63,11 +63,6 @@ public struct MLNMapViewWrapper: UIViewRepresentable {
         if let trackingMode {
             uiView.userTrackingMode = trackingMode
         }
-        guard let viewModel else { return }
-        
-        uiView.removeOverlays(uiView.overlays)
-        uiView.addOverlays(viewModel.polylines)
-        uiView.addOverlays(viewModel.polygons)
     }
     
     public final class Coordinator: NSObject, ObservableObject {
