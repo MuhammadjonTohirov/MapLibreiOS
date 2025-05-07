@@ -1,20 +1,19 @@
 //
-//  MapLibrWrapperModel+.swift
+//  MapLibreWrapperModel+Polyline.swift
 //  LibreMap
 //
 //  Created by Muhammadjon Tohirov on 07/05/25.
 //
+// MapLibreWrapperModel+Polyline.swift
 
 import Foundation
 import MapLibre
-import SwiftUI
+import CoreLocation
+import UIKit
 
-// MARK: - Polyline Drawing Extension
 extension MapLibreWrapperModel {
-    // MARK: Polyline Properties
     
-    
-    // MARK: Polyline Drawing Methods
+    // MARK: - Polyline Drawing Methods
     
     /// Start polyline drawing mode
     public func startPolylineDrawing() {
@@ -41,28 +40,36 @@ extension MapLibreWrapperModel {
     
     /// Update the visual display of the polyline being drawn
     private func updateDrawingVisualization() {
-//        guard let mapView = mapView, let style = mapView.style else { return }
-//        
-//        // Remove existing temporary drawing if it exists
-//        cleanupTemporaryDrawing()
-//        
-//        // Create a line string from the current coordinates
-//        let lineString = MLNLineString(coordinates: drawingCoordinates, count: UInt(drawingCoordinates.count))
-//        
-//        // Create or update shape source
-//        let source = MLNShapeSource(identifier: tempPolylineSourceID, shape: lineString, options: nil)
-//        style.addSource(source)
-//        
-//        // Create line style layer
-//        let lineLayer = MLNLineStyleLayer(identifier: tempPolylineLayerID, source: source)
-//        lineLayer.lineColor = MLNStyleValue(rawValue: UIColor.red)
-//        lineLayer.lineWidth = MLNStyleValue(rawValue: 4.0)
-//        lineLayer.lineCap = MLNStyleValue(rawValue: "round")
-//        lineLayer.lineJoin = MLNStyleValue(rawValue: "round")
-//        lineLayer.lineDashPattern = MLNStyleValue(rawValue: [2, 2])  // Dashed line for drawing mode
-//        
-//        // Add the layer
-//        style.addLayer(lineLayer)
+        guard let mapView = mapView, let style = mapView.style else { return }
+        
+        // Remove existing temporary drawing if it exists
+        cleanupTemporaryDrawing()
+        
+        // Create a polyline from the coordinates array
+        let polyline = MLNPolyline(coordinates: drawingCoordinates, count: UInt(drawingCoordinates.count))
+        
+        // Create or update shape source
+        let source = MLNShapeSource(identifier: tempPolylineSourceID, shape: polyline, options: nil)
+        style.addSource(source)
+        
+        // Create line style layer
+        let lineLayer = MLNLineStyleLayer(identifier: tempPolylineLayerID, source: source)
+        
+        // Set the line color using NSExpression
+        lineLayer.lineColor = NSExpression(forConstantValue: UIColor.red)
+        
+        // Set the line width using NSExpression
+        lineLayer.lineWidth = NSExpression(forConstantValue: 4.0)
+        
+        // Set the line cap and join style
+        lineLayer.lineCap = NSExpression(forConstantValue: "round")
+        lineLayer.lineJoin = NSExpression(forConstantValue: "round")
+        
+        // Set line dash pattern for drawing mode (dashed line)
+        lineLayer.lineDashPattern = NSExpression(forConstantValue: [2, 2])
+        
+        // Add the layer
+        style.addLayer(lineLayer)
     }
     
     /// Complete drawing a polyline and save it permanently
@@ -126,32 +133,38 @@ extension MapLibreWrapperModel {
         }
     }
     
-    // MARK: Polyline Management Methods
+    // MARK: - Polyline Management Methods
     
     /// Add a predefined polyline to the map
     /// - Parameter polyline: MapPolyline object to add
     public func addPolylineToMap(_ polyline: MapPolyline) {
-//        guard let mapView = mapView, let style = mapView.style else {
-//            // If style isn't loaded yet, we'll add it in didFinishLoading
-//            return
-//        }
-//        
-//        // Create line string geometry
-//        let lineString = MLNLineString(coordinates: polyline.coordinates, count: UInt(polyline.coordinates.count))
-//        
-//        // Create shape source
-//        let source = MLNShapeSource(identifier: "polyline-source-\(polyline.id)", shape: lineString, options: nil)
-//        
-//        // Create line style layer
-//        let lineLayer = MLNLineStyleLayer(identifier: "polyline-layer-\(polyline.id)", source: source)
-//        lineLayer.lineColor = MLNStyleValue(rawValue: polyline.color)
-//        lineLayer.lineWidth = MLNStyleValue(rawValue: polyline.width)
-//        lineLayer.lineCap = MLNStyleValue(rawValue: "round")
-//        lineLayer.lineJoin = MLNStyleValue(rawValue: "round")
-//        
-//        // Add source and layer to map
-//        style.addSource(source)
-//        style.addLayer(lineLayer)
+        guard let mapView = mapView, let style = mapView.style else {
+            // If style isn't loaded yet, we'll add it in didFinishLoading
+            return
+        }
+        
+        // Create polyline from coordinates
+        let mlnPolyline = MLNPolyline(coordinates: polyline.coordinates, count: UInt(polyline.coordinates.count))
+        
+        // Create shape source
+        let source = MLNShapeSource(identifier: "polyline-source-\(polyline.id)", shape: mlnPolyline, options: nil)
+        
+        // Create line style layer
+        let lineLayer = MLNLineStyleLayer(identifier: "polyline-layer-\(polyline.id)", source: source)
+        
+        // Set the line color using NSExpression
+        lineLayer.lineColor = NSExpression(forConstantValue: polyline.color)
+        
+        // Set the line width using NSExpression
+        lineLayer.lineWidth = NSExpression(forConstantValue: polyline.width)
+        
+        // Set the line cap and join style
+        lineLayer.lineCap = NSExpression(forConstantValue: "round")
+        lineLayer.lineJoin = NSExpression(forConstantValue: "round")
+        
+        // Add source and layer to map
+        style.addSource(source)
+        style.addLayer(lineLayer)
     }
     
     /// Add a polyline from raw coordinates
@@ -221,25 +234,17 @@ extension MapLibreWrapperModel {
         savedPolylines.removeAll()
     }
     
-    // MARK: Map Delegate Methods
-    
-    /// Handle when map style finishes loading
-    public func mapView(_ mapView: MLNMapView, didFinishLoading style: MLNStyle) {
-        debugPrint("Map style finished loading")
-        
-        // Add all saved polylines to the map
-        for polyline in savedPolylines {
-            addPolylineToMap(polyline)
+    /// Fit the map view to show a specific polyline
+    /// - Parameters:
+    ///   - polylineId: ID of the polyline to focus on
+    ///   - padding: Edge padding to apply
+    ///   - animated: Whether to animate the camera change
+    public func focusOnPolyline(id polylineId: String, padding: UIEdgeInsets = UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: Bool = true) {
+        guard let polyline = savedPolylines.first(where: { $0.id == polylineId }),
+              let bounds = polyline.boundingBox else {
+            return
         }
-    }
-    
-    /// Handle map taps for polyline drawing
-    public func mapView(_ mapView: MLNMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        debugPrint("Map tapped at: \(coordinate)")
         
-        // If in drawing mode, add a point
-        if isDrawingPolyline {
-            addPointToPolyline(coordinate: coordinate)
-        }
+        mapView?.setVisibleCoordinateBounds(bounds, edgePadding: padding, animated: animated)
     }
 }
