@@ -78,8 +78,10 @@ open class MapLibreWrapperModel: NSObject, ObservableObject {
     }
     
     public func mapView(_ mapView: MLNMapView, regionDidChangeAnimated animated: Bool) {
-        self.mapCenter = mapView.centerCoordinate
-        self.zoomLevel = mapView.zoomLevel
+        Task { @MainActor in
+            self.mapCenter = mapView.centerCoordinate
+            self.zoomLevel = mapView.zoomLevel
+        }
     }
 }
 extension MapLibreWrapperModel {

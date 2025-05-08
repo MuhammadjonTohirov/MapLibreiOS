@@ -1,6 +1,15 @@
 {
-  "originHash" : "5fc0c9cf1d3845ec311b6e0b572d4c84f5b5ca3d42a1e50cd89c46158ccf5389",
+  "originHash" : "1db21c556d1ac4ed1de2cfa3137837e4131ac644d15cd488007fcc60961a516e",
   "pins" : [
+    {
+      "identity" : "ios-maps-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googlemaps/ios-maps-sdk",
+      "state" : {
+        "revision" : "02f8f144ef266da44d50a68d1562ca051bac27cc",
+        "version" : "9.4.0"
+      }
+    },
     {
       "identity" : "mapbox-directions-swift",
       "kind" : "remoteSourceControl",

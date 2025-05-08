@@ -11,7 +11,7 @@ import SwiftUI
 struct LibreMapApp: App {
     var body: some Scene {
         WindowGroup {
-            MapRouteExampleView()
+            MapNavigationView()
         }
     }
 }

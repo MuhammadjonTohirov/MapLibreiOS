@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		526351C82DCC829B004E0C5A /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 526351C72DCC829B004E0C5A /* GoogleMaps */; };
 		52C160E12DCA20B1009F3062 /* MapboxNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 52C160E02DCA20B1009F3062 /* MapboxNavigation */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				526351C82DCC829B004E0C5A /* GoogleMaps in Frameworks */,
 				52C160E12DCA20B1009F3062 /* MapboxNavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +73,7 @@
 			name = LibreMap;
 			packageProductDependencies = (
 				52C160E02DCA20B1009F3062 /* MapboxNavigation */,
+				526351C72DCC829B004E0C5A /* GoogleMaps */,
 			);
 			productName = LibreMap;
 			productReference = 52C160D12DCA1EDD009F3062 /* LibreMap.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				52C160DF2DCA20B1009F3062 /* XCRemoteSwiftPackageReference "maplibre-navigation-ios" */,
+				526351C62DCC829B004E0C5A /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 52C160D22DCA1EDD009F3062 /* Products */;
@@ -339,6 +343,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		526351C62DCC829B004E0C5A /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.4.0;
+			};
+		};
 		52C160DF2DCA20B1009F3062 /* XCRemoteSwiftPackageReference "maplibre-navigation-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/maplibre/maplibre-navigation-ios";
@@ -350,6 +362,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		526351C72DCC829B004E0C5A /* GoogleMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 526351C62DCC829B004E0C5A /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
+			productName = GoogleMaps;
+		};
 		52C160E02DCA20B1009F3062 /* MapboxNavigation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 52C160DF2DCA20B1009F3062 /* XCRemoteSwiftPackageReference "maplibre-navigation-ios" */;

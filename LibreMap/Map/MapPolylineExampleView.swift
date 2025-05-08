@@ -17,7 +17,7 @@ struct MapRouteExampleView: View {
     @State private var errorMessage: String? = nil
     @State private var showStartPicker = false
     @State private var showEndPicker = false
-    @State private var routeColor: UIColor = .blue
+    @State private var routeColor: UIColor = .black
     
     // Sample locations for quick selection
     private let predefinedLocations = [
@@ -76,6 +76,7 @@ struct MapRouteExampleView: View {
                     
                     if !viewModel.savedPolylines.isEmpty, let lastPolyline = viewModel.savedPolylines.last {
                         Button(action: {
+                            routeColor = UIColor.systemOrange
                             viewModel.focusOnPolyline(id: lastPolyline.id)
                         }) {
                             Text("Focus on Route")
